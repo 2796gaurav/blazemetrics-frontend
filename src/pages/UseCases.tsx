@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,22 +21,35 @@ import {
 
 const UseCases: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Real-World Use Cases</h1>
-        <p className="text-xl text-muted-foreground mb-6">
-          Complete end-to-end evaluation workflows for domain-specific AI applications with working code examples from blazemetrics-core
-        </p>
-        
-        <div className="flex flex-wrap gap-2 mb-6">
-          <Badge variant="secondary"><Heart className="w-3 h-3 mr-1" />Healthcare</Badge>
-          <Badge variant="secondary"><DollarSign className="w-3 h-3 mr-1" />Financial Services</Badge>
-          <Badge variant="secondary"><MessageSquare className="w-3 h-3 mr-1" />Customer Service</Badge>
-          <Badge variant="secondary"><FileText className="w-3 h-3 mr-1" />Content Generation</Badge>
-          <Badge variant="secondary"><Code className="w-3 h-3 mr-1" />Code Evaluation</Badge>
-          <Badge variant="secondary"><Shield className="w-3 h-3 mr-1" />Safety & Compliance</Badge>
+    <>
+      <Helmet>
+        <title>AI & LLM Evaluation Use Cases | BlazeMetrics</title>
+        <meta name="description" content="End-to-end evaluation workflows for healthcare, finance, customer service, code, and content AI with real code and production guidance." />
+        <meta property="og:title" content="AI & LLM Evaluation Use Cases | BlazeMetrics" />
+        <meta property="og:description" content="End-to-end evaluation workflows for healthcare, finance, customer service, code, and content AI with real code and production guidance." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/blazemetrics/images/logo.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@gaurav_dev" />
+        <meta name="twitter:image" content="/blazemetrics/images/logo.png" />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/use-cases" />
+      </Helmet>
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-4">Real-World Use Cases</h1>
+          <p className="text-xl text-muted-foreground mb-6">
+            Complete end-to-end evaluation workflows for domain-specific AI applications with working code examples from blazemetrics-core
+          </p>
+          
+          <div className="flex flex-wrap gap-2 mb-6">
+            <Badge variant="secondary"><Heart className="w-3 h-3 mr-1" />Healthcare</Badge>
+            <Badge variant="secondary"><DollarSign className="w-3 h-3 mr-1" />Financial Services</Badge>
+            <Badge variant="secondary"><MessageSquare className="w-3 h-3 mr-1" />Customer Service</Badge>
+            <Badge variant="secondary"><FileText className="w-3 h-3 mr-1" />Content Generation</Badge>
+            <Badge variant="secondary"><Code className="w-3 h-3 mr-1" />Code Evaluation</Badge>
+            <Badge variant="secondary"><Shield className="w-3 h-3 mr-1" />Safety & Compliance</Badge>
+          </div>
         </div>
-      </div>
 
       <Alert className="mb-8">
         <CheckCircle className="h-4 w-4" />
@@ -3444,6 +3458,7 @@ print("Comprehensive medical AI evaluation with HIPAA compliance, bias detection
 
       </Tabs>
     </div>
+    </>
   );
 };
 

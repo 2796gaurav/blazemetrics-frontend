@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { Helmet } from "react-helmet-async"
 import { HeroSection } from "@/components/home/hero-section"
 import { ValueProposition } from "@/components/home/value-proposition"
 import { ContentCarousel } from "@/components/home/content-carousel"
@@ -58,78 +59,90 @@ const features = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <HeroSection />
-      
-      {/* Value Proposition Section */}
-      <ValueProposition />
-      
-      {/* Content Carousel Section */}
-      <ContentCarousel />
-      
-      {/* Features Section */}
-      <section className="py-24 bg-muted/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <Badge variant="secondary" className="mb-4">
-              Why BlazeMetrics?
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              Built for <span className="gradient-text">Production Scale</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From R&D to enterprise deployment, BlazeMetrics provides the speed, 
-              security, and reliability you need for modern AI evaluation.
-            </p>
-          </motion.div>
+    <>
+      <Helmet>
+        <title>BlazeMetrics - Lightning Fast LLM Evaluation</title>
+        <meta name="description" content="Ultra-high-performance evaluation suite for LLMs, GenAI, and multimodal models. Built with Rust for enterprise scale - 10-100x faster than alternatives." />
+        <meta property="og:title" content="BlazeMetrics - Lightning Fast LLM Evaluation" />
+        <meta property="og:description" content="Ultra-high-performance evaluation suite for LLMs, GenAI, and multimodal models. Built with Rust for enterprise scale - 10-100x faster than alternatives." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/blazemetrics/images/logo.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@gaurav_dev" />
+        <meta name="twitter:image" content="/blazemetrics/images/logo.png" />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/" />
+      </Helmet>
+      <div className="min-h-screen">
+        <HeroSection />
+        
+        {/* Value Proposition Section */}
+        <ValueProposition />
+        
+        {/* Content Carousel Section */}
+        <ContentCarousel />
+        
+        {/* Features Section */}
+        <section className="py-24 bg-muted/30">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <Badge variant="secondary" className="mb-4">
+                Why BlazeMetrics?
+              </Badge>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+                Built for <span className="gradient-text">Production Scale</span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                From R&D to enterprise deployment, BlazeMetrics provides the speed, 
+                security, and reliability you need for modern AI evaluation.
+              </p>
+            </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="p-6 h-full group hover:shadow-blaze hover:border-accent/50 transition-all duration-300">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-blaze-gradient-soft rounded-lg flex items-center justify-center mr-4 group-hover:bg-blaze-gradient transition-all duration-300">
-                        <Icon className="h-6 w-6 text-accent group-hover:text-white transition-colors duration-300" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => {
+                const Icon = feature.icon
+                return (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <Card className="p-6 h-full group hover:shadow-blaze hover:border-accent/50 transition-all duration-300">
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 bg-blaze-gradient-soft rounded-lg flex items-center justify-center mr-4 group-hover:bg-blaze-gradient transition-all duration-300">
+                          <Icon className="h-6 w-6 text-accent group-hover:text-white transition-colors duration-300" />
+                        </div>
+                        <h3 className="text-lg font-semibold">{feature.title}</h3>
                       </div>
-                      <h3 className="text-lg font-semibold">{feature.title}</h3>
-                    </div>
-                    
-                    <p className="text-muted-foreground mb-4">
-                      {feature.description}
-                    </p>
+                      <p className="text-muted-foreground mb-4">
+                        {feature.description}
+                      </p>
 
-                    <ul className="space-y-2">
-                      {feature.benefits.map((benefit, i) => (
-                        <li key={i} className="flex items-center text-sm">
-                          <CheckCircle className="h-4 w-4 text-accent mr-2 flex-shrink-0" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
-                </motion.div>
-              )
-            })}
+                      <ul className="space-y-2">
+                        {feature.benefits.map((benefit, i) => (
+                          <li key={i} className="flex items-center text-sm">
+                            <CheckCircle className="h-4 w-4 text-accent mr-2 flex-shrink-0" />
+                            {benefit}
+                          </li>
+                        ))}
+                      </ul>
+                    </Card>
+                  </motion.div>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Code Example Section */}
-      <section className="py-24">
+        {/* Code Example Section */}
+        <section className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -260,5 +273,6 @@ client.start_dashboard()  # localhost:8000`}</code>
         </div>
       </section>
     </div>
+    </>
   )
 }
