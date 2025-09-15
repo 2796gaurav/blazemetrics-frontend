@@ -15,9 +15,10 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: cp dist/index.html dist/404.html
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (blazemetrics repo)
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: 2796gaurav/blazemetrics
           publish_branch: gh-pages
           publish_dir: ./dist
