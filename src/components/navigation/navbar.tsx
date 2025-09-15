@@ -75,7 +75,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <img
-              src="/images/logo.png"
+              src="/blazemetrics/images/logo.png"
               alt="BlazeMetrics logo"
               className="w-8 h-8 object-contain drop-shadow group-hover:scale-105 group-hover:drop-shadow-lg transition-all duration-300"
             />
