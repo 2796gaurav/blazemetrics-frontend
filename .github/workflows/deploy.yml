@@ -17,7 +17,7 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./dist   # vite build output
           external_repository: 2796gaurav/2796gaurav.github.io
           publish_branch: main
