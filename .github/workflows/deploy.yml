@@ -8,25 +8,15 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the code
       - uses: actions/checkout@v4
-
-      # Setup Node.js
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      # Install dependencies
       - run: npm ci
-
-      # Build the project (generates dist/)
       - run: npm run build
-
-      # Deploy dist/ to 2796gaurav.github.io repo
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          external_repository: 2796gaurav/2796gaurav.github.io
-          publish_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
           publish_dir: ./dist
