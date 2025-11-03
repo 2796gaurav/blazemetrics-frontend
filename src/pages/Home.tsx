@@ -66,11 +66,11 @@ export default function Home() {
         <meta property="og:title" content="BlazeMetrics - Lightning Fast LLM Evaluation" />
         <meta property="og:description" content="Ultra-high-performance evaluation suite for LLMs, GenAI, and multimodal models. Built with Rust for enterprise scale - 10-100x faster than alternatives." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/blazemetrics/images/logo.png" />
+        <meta property="og:image" content="/images/logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@gaurav_dev" />
-        <meta name="twitter:image" content="/blazemetrics/images/logo.png" />
-        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/" />
+        <meta name="twitter:image" content="/images/logo.png" />
+        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/" />
       </Helmet>
       <div className="min-h-screen">
         <HeroSection />

@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   // Use base path for deployments
-  base: "/blazemetrics/",
+  base: "/",
   plugins: [react()],
   resolve: {
     alias: {

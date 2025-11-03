@@ -36,7 +36,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename="/blazemetrics">
+        <BrowserRouter>
           <NavigationProvider>
             <Navbar />
       <Routes>
