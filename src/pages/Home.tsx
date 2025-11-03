@@ -70,7 +70,7 @@ export default function Home() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@gaurav_dev" />
         <meta name="twitter:image" content="/images/logo.png" />
-        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/" />
+        <link rel="canonical" href="https://blazemetrics.vercel.app/" />
       </Helmet>
       <div className="min-h-screen">
         <HeroSection />

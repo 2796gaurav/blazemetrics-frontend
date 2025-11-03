@@ -12,7 +12,7 @@ export default function About() {
         <meta name="description" content="Learn about BlazeMetrics - the fastest LLM evaluation framework built with Rust. Enterprise-ready evaluation suite for AI and GenAI models." />
         <meta property="og:title" content="About BlazeMetrics" />
         <meta property="og:description" content="Learn about BlazeMetrics - the fastest LLM evaluation framework." />
-        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/about" />
+        <link rel="canonical" href="https://blazemetrics.vercel.app/about" />
       </Helmet>
     <div className="min-h-screen pt-16">
       <section className="py-16 bg-muted/30">

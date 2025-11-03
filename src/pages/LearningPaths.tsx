@@ -110,7 +110,7 @@ export default function LearningPaths() {
         <meta name="description" content="Structured learning paths for BlazeMetrics. Whether you're a beginner or advanced user, find the right path to master LLM evaluation." />
         <meta property="og:title" content="BlazeMetrics Learning Paths" />
         <meta property="og:description" content="Structured learning paths for BlazeMetrics LLM evaluation framework." />
-        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/learning-paths" />
+        <link rel="canonical" href="https://blazemetrics.vercel.app/learning-paths" />
       </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}

@@ -32,7 +32,7 @@ const UseCases: React.FC = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@gaurav_dev" />
         <meta name="twitter:image" content="/images/logo.png" />
-        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/use-cases" />
+        <link rel="canonical" href="https://blazemetrics.vercel.app/use-cases" />
       </Helmet>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">

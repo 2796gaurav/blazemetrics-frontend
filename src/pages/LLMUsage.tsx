@@ -197,7 +197,7 @@ export default function LLMUsage() {
         <meta name="description" content="Learn how to integrate BlazeMetrics with OpenAI, Anthropic, HuggingFace, and other LLM providers. Complete guide with code examples." />
         <meta property="og:title" content="BlazeMetrics LLM Usage Guide" />
         <meta property="og:description" content="Learn how to integrate BlazeMetrics with popular LLM providers." />
-        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/llm-usage" />
+        <link rel="canonical" href="https://blazemetrics.vercel.app/llm-usage" />
       </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
