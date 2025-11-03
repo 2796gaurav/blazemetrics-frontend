@@ -131,7 +131,7 @@ export default function Documentation() {
         <meta property="og:title" content="BlazeMetrics Documentation" />
         <meta property="og:description" content="Complete documentation for BlazeMetrics - LLM evaluation framework." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/docs" />
+        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/docs" />
       </Helmet>
       <div className="min-h-screen pt-16">
       {/* Header */}

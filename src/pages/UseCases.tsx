@@ -28,11 +28,11 @@ const UseCases: React.FC = () => {
         <meta property="og:title" content="AI & LLM Evaluation Use Cases | BlazeMetrics" />
         <meta property="og:description" content="End-to-end evaluation workflows for healthcare, finance, customer service, code, and content AI with real code and production guidance." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/blazemetrics/images/logo.png" />
+        <meta property="og:image" content="/images/logo.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@gaurav_dev" />
-        <meta name="twitter:image" content="/blazemetrics/images/logo.png" />
-        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/use-cases" />
+        <meta name="twitter:image" content="/images/logo.png" />
+        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/use-cases" />
       </Helmet>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">

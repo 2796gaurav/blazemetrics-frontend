@@ -239,7 +239,7 @@ export default function Benchmarks() {
         <meta property="og:title" content="BlazeMetrics Performance Benchmarks" />
         <meta property="og:description" content="See how BlazeMetrics outperforms leading evaluation libraries with Rust-powered speed." />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/benchmarks" />
+        <link rel="canonical" href="https://blazemetrics-frontend.vercel.app/benchmarks" />
       </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
