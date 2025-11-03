@@ -36,7 +36,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter basename={import.meta.env.VITE_APP_BASE_PATH || (import.meta.env.VERCEL === "1" ? "/" : "/blazemetrics")}>
+        <BrowserRouter basename="/blazemetrics">
           <NavigationProvider>
             <Navbar />
       <Routes>

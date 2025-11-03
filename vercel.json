@@ -4,22 +4,29 @@
   "devCommand": "npm run dev",
   "installCommand": "npm ci",
   "framework": "vite",
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/",
+      "destination": "/blazemetrics/",
+      "statusCode": 302
     }
   ],
+  "rewrites": [
+  {
+  "source": "/blazemetrics/(.*)",
+  "destination": "/index.html"
+  }
+  ],
   "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
+  {
+  "source": "/blazemetrics/assets/(.*)",
+  "headers": [
+  {
+  "key": "Cache-Control",
+  "value": "public, max-age=31536000, immutable"
+  }
+  ]
+  }
   ]
 }
 
