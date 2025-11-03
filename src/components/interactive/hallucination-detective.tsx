@@ -441,7 +441,12 @@ from blazemetrics.llm_judge import LLMJudge
 client = BlazeMetricsClient()
 judge = LLMJudge(provider="${llmProvider}", model="${model}")
 
-client.set_factuality_scorer(judge.score_factuality)
+# Set factuality scorer - scorer takes (output, reference) and returns dict
+def factuality_scorer(output, reference):
+    result = judge.score([output], [reference] if reference else [None])
+    return result[0]  # Return dict with 'faithfulness', 'hallucination', etc.
+
+client.set_factuality_scorer(factuality_scorer)
 
 # Analyze for hallucinations
 result = client.evaluate_factuality(
@@ -449,8 +454,8 @@ result = client.evaluate_factuality(
     ["${useCustom ? customQuestion : selectedExample.question}"]
 )
 
-print(f"Factuality: {result[0]['factuality']:.3f}")
-print(f"Hallucination Risk: {result[0]['hallucination']:.3f}")`}</code>
+print(f"Factuality: {result[0].get('faithfulness', result[0].get('factuality', 0.0)):.3f}")
+print(f"Hallucination Risk: {result[0].get('hallucination', 0.0):.3f}")`}</code>
                 </pre>
               </div>
             </CardContent>

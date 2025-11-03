@@ -275,7 +275,8 @@ safety_results = client.check_safety(medical_outputs)
 print("\\nPII Detection Results:")
 for i, result in enumerate(safety_results):
     print(f"\\nOutput {i+1}: {medical_outputs[i][:50]}...")
-    print(f"  PII Detected: {result.get('pii_detected', False)}")
+    pii_detected = result.get('redacted', '') != result.get('original', '')
+    print(f"  PII Detected: {pii_detected}")
     print(f"  Redacted Output: {result.get('redacted', 'N/A')}")
     print(f"  Safety Score: {result.get('safety_score', 0.0):.3f}")
 
@@ -336,8 +337,8 @@ for i, (case_description, severity) in enumerate(clinical_cases):
 # 5. Regulatory Compliance Report
 compliance_report = {
     "hipaa_compliance": {
-        "pii_detection_rate": sum(1 for r in safety_results if r.get('pii_detected')) / len(safety_results),
-        "redaction_success_rate": sum(1 for r in safety_results if r.get('redacted')) / len(safety_results),
+        "pii_detection_rate": sum(1 for r in safety_results if r.get('redacted', '') != r.get('original', '')) / len(safety_results),
+        "redaction_success_rate": sum(1 for r in safety_results if r.get('redacted', '') != r.get('original', '')) / len(safety_results),
     },
     "bias_assessment": {
         "bias_detected": any(scores.get('bias_score', 0) > 0.3 for scores in bias_results.values()),
@@ -3025,18 +3026,18 @@ for i, toxic_text in enumerate(toxic_content_samples):
     
     result = {
         "original": toxic_text,
-        "safety_score": safety_result.get("safety_score", 0.0),
-        "blocked": safety_result.get("blocked", False),
+        "safe": safety_result.get("safe", True),
+        "blocked": any(safety_result.get("blocked", [])),
         "toxicity_detected": guardrail_result.get("label") == "toxic",
         "toxicity_confidence": guardrail_result.get("confidence", 0.0),
         "safe_alternative": safe_alternative,
-        "safe_score": safe_check.get("safety_score", 1.0),
-        "transformation_success": safe_check.get("safety_score", 1.0) > 0.8
+        "safe_after_transformation": safe_check.get("safe", True),
+        "transformation_success": safe_check.get("safe", True)
     }
     
     moderation_results.append(result)
     
-    print(f"Safety Score: {result['safety_score']:.3f}")
+    print(f"Safe: {result['safe']}")
     print(f"Blocked: {result['blocked']}")
     print(f"Toxicity: {result['toxicity_confidence']:.3f}")
     print(f"Safe Version: {result['safe_alternative']}")
@@ -3226,7 +3227,7 @@ pii_violations = []
 for i, diagnosis in enumerate(medical_diagnoses):
     safety_result = client.check_safety([diagnosis])[0]
     
-    pii_detected = safety_result.get("pii_detected", False)
+    pii_detected = safety_result.get("redacted", "") != safety_result.get("original", "")
     redacted_text = safety_result.get("redacted", diagnosis)
     
     if pii_detected:

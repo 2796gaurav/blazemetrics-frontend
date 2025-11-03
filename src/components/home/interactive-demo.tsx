@@ -73,8 +73,9 @@ text = "Contact John at john.doe@company.com for details"
 safety_result = client.check_safety([text])
 
 print(f"Safe: {safety_result[0]['safe']}")
-print(f"PII found: {safety_result[0]['pii_found']}")
-print(f"Redacted: {safety_result[0]['redacted_text']}")`,
+pii_found = safety_result[0]['redacted'] != safety_result[0]['original']
+print(f"PII found: {pii_found}")
+print(f"Redacted: {safety_result[0]['redacted']}")`,
     candidate: "Contact John at john.doe@company.com for details",
     reference: "Contact John at [EMAIL] for details",
     expectedResults: {
@@ -92,10 +93,13 @@ print(f"Redacted: {safety_result[0]['redacted_text']}")`,
     title: "LLM Quality Assessment",
     description: "Evaluate LLM outputs with factuality scoring",
     code: `from blazemetrics import BlazeMetricsClient
-from blazemetrics.llm_judge import OpenAIJudge
+from blazemetrics.llm_judge import LLMJudge
 
 client = BlazeMetricsClient()
-judge = OpenAIJudge(api_key="your-key")
+judge = LLMJudge(provider="openai", api_key="your-key", model="gpt-4o")
+
+# Set factuality scorer
+client.set_factuality_scorer(lambda output, ref: judge.score([output], [ref])[0])
 
 # Evaluate LLM response quality
 question = "What is the capital of France?"
@@ -103,8 +107,9 @@ response = "Paris is the capital of France, known for the Eiffel Tower."
 reference = "Paris is the capital of France."
 
 # Get comprehensive evaluation
-metrics = client.compute_metrics([response], [reference])
-factuality = judge.score_factuality(question, response)
+metrics = client.compute_metrics([response], [[reference]])
+factuality_results = client.evaluate_factuality([response], [reference])
+factuality = factuality_results[0].get("factuality", 0.0)
 
 print(f"Quality Score: {metrics['meteor'][0]:.3f}")
 print(f"Factuality: {factuality:.3f}")`,

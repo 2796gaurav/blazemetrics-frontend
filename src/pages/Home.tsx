@@ -201,13 +201,14 @@ export default function Home() {
 client = BlazeMetricsClient()
 
 # Evaluate your model outputs
-metrics = client.compute_metrics(
-    candidates=["The model output..."],
-    references=[["Expected output..."]]
-)
+candidates = ["The model output..."]
+references = [["Expected output..."]]
 
-print(f"BLEU: {metrics['bleu']}")
-print(f"ROUGE-L: {metrics['rouge_l']}")
+metrics = client.compute_metrics(candidates, references)
+aggregated = client.aggregate_metrics(metrics)
+
+print(f"BLEU: {aggregated['bleu']:.3f}")
+print(f"ROUGE-L: {aggregated['rougeL_f1']:.3f}")
 
 # Real-time safety check
 safety = client.check_safety([
@@ -215,10 +216,8 @@ safety = client.check_safety([
 ])
 
 print(f"Safe: {safety[0]['safe']}")
-print(f"PII detected: {safety[0]['pii_found']}")
-
-# Start monitoring dashboard
-client.start_dashboard()  # localhost:8000`}</code>
+pii_detected = safety[0]['redacted'] != safety[0]['original']
+print(f"PII detected: {pii_detected}")`}</code>
                 </pre>
               </Card>
 

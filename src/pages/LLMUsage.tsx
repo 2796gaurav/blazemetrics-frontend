@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -190,6 +191,14 @@ export default function LLMUsage() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>LLM Usage Guide | BlazeMetrics</title>
+        <meta name="description" content="Learn how to integrate BlazeMetrics with OpenAI, Anthropic, HuggingFace, and other LLM providers. Complete guide with code examples." />
+        <meta property="og:title" content="BlazeMetrics LLM Usage Guide" />
+        <meta property="og:description" content="Learn how to integrate BlazeMetrics with popular LLM providers." />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/llm-usage" />
+      </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
       <section className="py-16 bg-muted/30">
@@ -452,5 +461,6 @@ export default function LLMUsage() {
         </div>
       </section>
     </div>
+    </>
   )
 }

@@ -1,10 +1,19 @@
 import { motion } from "framer-motion"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Users, Mail, MapPin, ExternalLink } from "lucide-react"
 
 export default function About() {
   return (
+    <>
+      <Helmet>
+        <title>About BlazeMetrics | Fast LLM Evaluation Framework</title>
+        <meta name="description" content="Learn about BlazeMetrics - the fastest LLM evaluation framework built with Rust. Enterprise-ready evaluation suite for AI and GenAI models." />
+        <meta property="og:title" content="About BlazeMetrics" />
+        <meta property="og:description" content="Learn about BlazeMetrics - the fastest LLM evaluation framework." />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/about" />
+      </Helmet>
     <div className="min-h-screen pt-16">
       <section className="py-16 bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -45,5 +54,6 @@ export default function About() {
         </div>
       </section>
     </div>
+    </>
   )
 }

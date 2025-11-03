@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -231,6 +232,15 @@ export default function Benchmarks() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>Performance Benchmarks | BlazeMetrics</title>
+        <meta name="description" content="BlazeMetrics performance benchmarks: 4.85s vs NLTK 5.40s, SacreBLEU 5.51s, Huggingface 18.19s, TorchMetrics 63.59s. 100x faster LLM evaluation on 10,000 text pairs." />
+        <meta property="og:title" content="BlazeMetrics Performance Benchmarks" />
+        <meta property="og:description" content="See how BlazeMetrics outperforms leading evaluation libraries with Rust-powered speed." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/benchmarks" />
+      </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
       <section className="py-16 bg-muted/30">
@@ -786,5 +796,6 @@ export default function Benchmarks() {
         </div>
       </section>
     </div>
+    </>
   )
 }

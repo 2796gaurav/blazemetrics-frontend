@@ -40,26 +40,25 @@ client = BlazeMetricsClient(
     # Performance optimization
     metrics_include=["rouge1", "rouge2", "bleu", "meteor"],  # Only needed metrics
     metrics_lowercase=True,  # Normalize case for consistency
-    batch_size=100,  # Process in batches for memory efficiency
+    chunk_size=1000,  # Process in chunks for memory efficiency
+    parallel_processing=True,
     
     # Guardrails and safety
     redact_pii=True,
     blocklist=["sensitive", "confidential"],
     regexes=[r"\\b\\d{3}-\\d{2}-\\d{4}\\b"],  # SSN pattern
+    case_insensitive=True,
     
     # Analytics and monitoring
     enable_analytics=True,
     analytics_window=1000,
     analytics_alerts=True,
+    analytics_trends=True,
+    analytics_anomalies=True,
     
-    # Export configuration
-    export_format="json",
-    export_path="./metrics_output/",
-    
-    # Advanced settings
-    case_insensitive=True,
-    parallel_processing=True,
-    cache_embeddings=True
+    # Monitoring configuration
+    enable_monitoring=True,
+    monitoring_thresholds={"rouge1_f1": 0.6, "wer": 0.2}
 )
 
 # Best practice: Always validate inputs
@@ -99,49 +98,60 @@ metrics, agg = evaluate_with_validation(candidates, references)`
 speed_client = BlazeMetricsClient(
     metrics_include=["rouge1", "bleu"],  # Only essential metrics
     parallel_processing=True,
-    batch_size=500,  # Larger batches
-    cache_embeddings=True
+    chunk_size=2000,  # Larger chunks for better performance
+    max_workers=8  # Use multiple workers
 )
 
 # 2. Comprehensive evaluation (all metrics)
 comprehensive_client = BlazeMetricsClient(
-    metrics_include="all",  # All available metrics
+    metrics_include=["rouge1", "rouge2", "rougeL", "bleu", "chrf", "meteor", "wer", "token_f1", "jaccard"],
     enable_analytics=True,
-    export_format="detailed_json"
+    analytics_window=500
 )
 
 # 3. Production monitoring (with guardrails)
+# Load blocklist and regexes from files (you need to read files yourself)
+with open("./config/blocklist.txt") as f:
+    blocklist = [line.strip() for line in f if line.strip()]
+
+with open("./config/patterns.txt") as f:
+    regexes = [line.strip() for line in f if line.strip()]
+
 production_client = BlazeMetricsClient(
     # Core metrics for monitoring
     metrics_include=["rouge1", "rouge2", "meteor"],
     
     # Safety and compliance
     redact_pii=True,
-    blocklist_file="./config/blocklist.txt",
-    regexes_file="./config/patterns.txt",
+    blocklist=blocklist,  # Loaded from file
+    regexes=regexes,  # Loaded from file
+    case_insensitive=True,
     
     # Real-time analytics
     enable_analytics=True,
     analytics_window=10000,
     analytics_alerts=True,
-    alert_thresholds={
+    analytics_trends=True,
+    analytics_anomalies=True,
+    
+    # Monitoring thresholds
+    enable_monitoring=True,
+    monitoring_thresholds={
         "rouge1_f1": 0.5,  # Alert if quality drops below 50%
-        "safety_violations": 0.01  # Alert if >1% violations
     },
     
-    # Export for downstream systems
-    export_format="prometheus",  # For monitoring dashboards
-    export_interval=300  # Export every 5 minutes
+    # Export configuration
+    prometheus_gateway="http://prometheus:9091",  # For Prometheus
+    statsd_addr="localhost:8125"  # For StatsD
 )
 
-# 4. Research/experimentation (flexible configuration)
+# 4. Research/experimentation (comprehensive configuration)
 research_client = BlazeMetricsClient(
-    metrics_include="all",
-    custom_metrics={
-        "domain_specific": lambda c, r: custom_domain_metric(c, r)
-    },
-    enable_detailed_logging=True,
-    export_raw_scores=True
+    metrics_include=["rouge1", "rouge2", "rougeL", "bleu", "chrf", "meteor", "wer", "token_f1", "jaccard"],
+    metrics_lowercase=True,
+    metrics_stemming=True,  # Enable stemming for research
+    enable_analytics=True,
+    analytics_window=1000
 )`
 
   const troubleshootingCode = `from blazemetrics import BlazeMetricsClient

@@ -19,15 +19,15 @@ export default function GuardrailsGuide() {
 
   const basicExample = `from blazemetrics import BlazeMetricsClient
 
-client = BlazeMetricsClient(config={
-    "blocklist": ["secret", "confidential", "password"],
-    "regexes": [r"\\d{16}", r"\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b"],
-    "case_insensitive": True,
-    "redact_pii": True,
-    "enhanced_pii": True,
-    "detect_injection": True,
-    "safety": True
-})
+client = BlazeMetricsClient(
+    blocklist=["secret", "confidential", "password"],
+    regexes=[r"\\d{16}", r"\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b"],
+    case_insensitive=True,
+    redact_pii=True,
+    enhanced_pii=True,
+    detect_injection=True,
+    safety=True
+)
 
 unsafe_samples = [
     "My credit card number is 1234-5678-9012-3456",
@@ -37,29 +37,36 @@ unsafe_samples = [
 
 result = client.check_safety(unsafe_samples)
 for r in result:
-    print(f"Text: {r['text']}")
+    print(f"Text: {r['original']}")
     print(f"Safe: {r['safe']}")
-    print(f"Issues: {r['issues']}")
+    # Build issues list from available fields
+    issues = []
+    if any(r.get('blocked', [])):
+        issues.append("blocklist_match")
+    if any(r.get('regex_flagged', [])):
+        issues.append("regex_match")
+    if r.get('redacted', '') != r.get('original', ''):
+        issues.append("pii_detected")
+    print(f"Issues: {issues}")
+    print(f"Redacted: {r.get('redacted', '')}")
     print("---")`
 
   const advancedExample = `from blazemetrics.enhanced_guardrails import EnhancedGuardrails
 
 # Policy-driven guardrails
+def send_security_alert(result):
+    print(f"[SECURITY ALERT] Violation: {result.get('original', '')[:50]}...")
+
 guard = EnhancedGuardrails(
     blocklist=["hack", "exploit", "bypass"],
     enforcement_policies=[
         {
-            "condition": lambda result: any(result["blocked"]),
+            "condition": lambda result: any(result.get("blocked", [])),
             "action": "reject",
             "message": "Content violates policy"
         },
         {
-            "condition": lambda result: result["safety_score"] < 0.3,
-            "action": "flag_for_review",
-            "message": "Requires human review"
-        },
-        {
-            "condition": lambda result: len(result["pii_found"]) > 0,
+            "condition": lambda result: result.get("redacted", "") != result.get("original", ""),
             "action": "redact_and_log",
             "message": "PII detected and redacted"
         }
@@ -75,8 +82,11 @@ results = guard.check([
 ])
 
 for result in results:
-    print(f"Action taken: {result['action']}")
-    print(f"Safe to proceed: {result['safe_to_proceed']}")`
+    print(f"Original: {result['original']}")
+    print(f"Action taken: {result.get('enforcement_action', 'none')}")
+    print(f"Safe: {result['safe']}")
+    print(f"Final Output: {result.get('final_output', result['original'])}")
+    print("---")`
 
   const embeddingExample = `# Embedding-based content filtering
 import numpy as np
@@ -120,12 +130,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize with monitoring
-client = BlazeMetricsClient(config={
-    "redact_pii": True,
-    "safety": True,
-    "enable_monitoring": True,
-    "prometheus_gateway": "http://localhost:9091"
-})
+client = BlazeMetricsClient(
+    redact_pii=True,
+    safety=True,
+    enable_monitoring=True,
+    prometheus_gateway="http://localhost:9091"
+)
 
 # Setup metrics export
 exporter = MetricsExporters(
@@ -140,19 +150,22 @@ def moderate_content(texts, user_id=None, session_id=None):
     results = client.check_safety(texts)
     
     # Log violations
-    violations = [r for r in results if not r['safe']]
+    violations = [r for r in results if not r.get('safe', True)]
     if violations:
         logger.warning(f"Safety violations detected: {len(violations)} out of {len(texts)}")
         
-        # Export metrics
-        exporter.export({
-            "safety_violations_total": len(violations),
-            "safety_check_total": len(texts),
-            "safety_violation_rate": len(violations) / len(texts)
-        }, labels={
-            "user_id": user_id or "anonymous",
-            "session_id": session_id or "unknown"
-        })
+        # Export metrics (if exporter is available)
+        try:
+            exporter.export({
+                "safety_violations_total": len(violations),
+                "safety_check_total": len(texts),
+                "safety_violation_rate": len(violations) / len(texts)
+            }, labels={
+                "user_id": user_id or "anonymous",
+                "session_id": session_id or "unknown"
+            })
+        except Exception as e:
+            logger.error(f"Failed to export metrics: {e}")
     
     return results
 
@@ -167,7 +180,17 @@ moderation_results = moderate_content(
     user_inputs, 
     user_id="user_123", 
     session_id="session_456"
-)`
+)
+
+# Display results
+for i, result in enumerate(moderation_results):
+    print(f"Text {i+1}: {user_inputs[i]}")
+    print(f"  Safe: {result.get('safe', False)}")
+    print(f"  Blocked: {any(result.get('blocked', []))}")
+    pii_detected = result.get('redacted', '') != result.get('original', '')
+    print(f"  PII Detected: {pii_detected}")
+    print(f"  Final Output: {result.get('final_output', result.get('original', ''))}")
+    print("---")`
 
   const guardrailTypes = [
     {
@@ -341,9 +364,15 @@ moderation_results = moderate_content(
                   <span className="font-medium text-green-700 dark:text-green-300">Expected Output</span>
                 </div>
                 <div className="text-sm text-green-600 dark:text-green-400 font-mono space-y-1">
-                  <div>Text: [REDACTED]</div>
+                  <div>Text: My credit card number is 1234-5678-9012-3456</div>
                   <div>Safe: False</div>
-                  <div>Issues: ["credit_card_detected", "pii_found"]</div>
+                  <div>Issues: ["regex_match", "pii_detected"]</div>
+                  <div>Redacted: [PII redacted version]</div>
+                  <div className="mt-2 pt-2 border-t border-green-500/20">
+                    <div>Text: Contact me at john.doe@example.com for secret info</div>
+                    <div>Safe: False</div>
+                    <div>Issues: ["blocklist_match", "regex_match", "pii_detected"]</div>
+                  </div>
                 </div>
               </Card>
             </Card>

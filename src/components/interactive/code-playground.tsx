@@ -111,10 +111,12 @@ safety_results = client.check_safety([text])
 # Display safety analysis
 result = safety_results[0]
 print(f"Safe: {result['safe']}")
-print(f"PII Detected: {result['pii_found']}")
-print(f"Violations: {result['violations']}")
-if result['redacted_text'] != text:
-    print(f"Redacted: {result['redacted_text']}")`,
+pii_found = result['redacted'] != result['original']
+print(f"PII Detected: {pii_found}")
+blocked = any(result.get('blocked', []))
+print(f"Violations: {'blocked' if blocked else 'none'}")
+if result['redacted'] != text:
+    print(f"Redacted: {result['redacted']}")`,
     defaultCandidate: "Contact John Doe at john.doe@company.com for confidential information.",
     defaultReference: "Contact [NAME] at [EMAIL] for information.",
     expectedOutput: {
@@ -143,8 +145,12 @@ from blazemetrics.llm_judge import LLMJudge
 client = BlazeMetricsClient(enable_analytics=True)
 judge = LLMJudge(provider="openai", model="gpt-4o")
 
-# Set up factuality scorer
-client.set_factuality_scorer(judge.score_factuality)
+# Set up factuality scorer - scorer takes (output, reference) and returns dict
+def factuality_scorer(output, reference):
+    result = judge.score([output], [reference] if reference else [None])
+    return result[0]  # Return dict with 'faithfulness', 'hallucination', etc.
+
+client.set_factuality_scorer(factuality_scorer)
 
 # Evaluate LLM response
 question = "What is the capital of France?"
@@ -163,8 +169,8 @@ for metric, value in aggregated.items():
 
 print("\\n=== Factuality Analysis ===")
 fact_result = factuality[0]
-print(f"Factuality Score: {fact_result['factuality']:.3f}")
-print(f"Hallucination Risk: {fact_result['hallucination']:.3f}")`,
+print(f"Factuality Score: {fact_result.get('faithfulness', fact_result.get('factuality', 0.0)):.3f}")
+print(f"Hallucination Risk: {fact_result.get('hallucination', 0.0):.3f}")`,
     defaultCandidate: "Paris is the capital of France and the largest city in Europe.",
     defaultReference: "Paris is the capital of France.",
     expectedOutput: {

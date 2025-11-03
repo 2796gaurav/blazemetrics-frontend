@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -407,15 +408,15 @@ Response 3: Good (ROUGE-1: 0.901)`,
               </p>
               <div className="flex justify-center space-x-4">
                 <Button asChild>
-                  <a href="/docs/metrics">
+                  <Link to="/docs/metrics">
                     Explore More Metrics
                     <ArrowRight className="h-4 w-4 ml-2" />
-                  </a>
+                  </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <a href="/use-cases">
+                  <Link to="/use-cases">
                     See Use Cases
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>

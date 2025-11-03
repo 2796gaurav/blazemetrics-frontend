@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -122,7 +124,16 @@ export default function Documentation() {
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
-    <div className="min-h-screen pt-16">
+    <>
+      <Helmet>
+        <title>Documentation | BlazeMetrics</title>
+        <meta name="description" content="Complete documentation for BlazeMetrics - LLM evaluation framework. Learn how to integrate BlazeMetrics into your AI evaluation workflow with comprehensive guides and API references." />
+        <meta property="og:title" content="BlazeMetrics Documentation" />
+        <meta property="og:description" content="Complete documentation for BlazeMetrics - LLM evaluation framework." />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/docs" />
+      </Helmet>
+      <div className="min-h-screen pt-16">
       {/* Header */}
       <section className="py-16 bg-gradient-to-br from-muted/30 to-accent/5 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -232,12 +243,12 @@ export default function Documentation() {
                                   className="justify-start h-auto p-2 text-left group"
                                   asChild
                                 >
-                                  <a href={doc.href}>
-                                    <span className="group-hover:text-black transition-colors">
+                                  <Link to={doc.href}>
+                                    <span className="group-hover:text-accent transition-colors">
                                       {doc.title}
                                     </span>
-                                    <ExternalLink className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                                  </a>
+                                    <ArrowRight className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                                  </Link>
                                 </Button>
                               ))}
                             </div>
@@ -256,5 +267,6 @@ export default function Documentation() {
         </div>
       </section>
     </div>
+    </>
   )
 }

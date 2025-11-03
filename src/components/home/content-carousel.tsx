@@ -39,16 +39,20 @@ const carouselItems: CarouselItem[] = [
     subtitle: "Real Results, Real Fast",
     description: "Catch AI hallucinations instantly with factuality scoring. See how BlazeMetrics identifies false claims in real-time using LLM judges.",
     codeSnippet: `from blazemetrics import BlazeMetricsClient
-from blazemetrics.llm_judge import OpenAIJudge
+from blazemetrics.llm_judge import LLMJudge
 
 client = BlazeMetricsClient()
-judge = OpenAIJudge(api_key="your-key")
+judge = LLMJudge(provider="openai", api_key="your-key", model="gpt-4o")
+
+# Set factuality scorer
+client.set_factuality_scorer(lambda output, ref: judge.score([output], [ref])[0])
 
 # Test factuality
 question = "What is the capital of France?"
 response = "Paris is in Germany"  # Hallucination!
 
-factuality = judge.score_factuality(question, response)
+factuality_results = client.evaluate_factuality([response], [question])
+factuality = factuality_results[0].get("factuality", 0.0)
 print(f"Factuality Score: {factuality:.3f}")  # 0.123`,
     results: [
       { metric: "Factuality Score", value: "0.123", status: "poor" },
@@ -66,20 +70,36 @@ print(f"Factuality Score: {factuality:.3f}")  # 0.123`,
     subtitle: "See BlazeMetrics in Action",
     description: "End-to-end RAG evaluation with semantic search, citation accuracy, and provenance tracking. Real document corpus, real results.",
     codeSnippet: `from blazemetrics import BlazeMetricsClient
+import numpy as np
 
 client = BlazeMetricsClient()
 
 # RAG evaluation pipeline
-query = "What are the benefits of renewable energy?"
-retrieved_docs = client.semantic_search(query, corpus)
-response = llm.generate(query, retrieved_docs)
+query_text = "What are the benefits of renewable energy?"
+query_embedding = get_embedding(query_text)  # Your embedding model
+corpus_embeddings = get_embeddings(corpus)   # Your corpus embeddings
 
-# Comprehensive RAG scoring
-rag_score = client.evaluate_rag(
-    query=query,
-    response=response,
-    retrieved_docs=retrieved_docs,
-    ground_truth="Renewable energy reduces emissions..."
+# Semantic search (returns top-k matches)
+results = client.semantic_search(
+    np.array([query_embedding], dtype=np.float32),
+    np.array(corpus_embeddings, dtype=np.float32),
+    top_k=5
+)
+
+retrieved_docs = [corpus[idx] for idx in results[0][0]]  # Extract top docs
+response = llm.generate(query_text, retrieved_docs)  # Your LLM call
+
+# Agentic RAG evaluation
+rag_score = client.agentic_rag_evaluate(
+    queries=[query_text],
+    agent_traces=[{"retrieved": retrieved_docs, "response": response}],
+    ground_truth=["Renewable energy reduces emissions..."]
+)
+
+# Provenance tracking
+provenance = client.trace_provenance(
+    outputs=[response],
+    rag_chunks=[retrieved_docs]
 )`,
     results: [
       { metric: "Retrieval Accuracy", value: "0.892", status: "excellent" },
@@ -112,7 +132,10 @@ agent_trace = {
     ]
 }
 
-score = evaluator.evaluate_workflow(agent_trace)`,
+score = evaluator.evaluate(
+    tasks=["Book a flight to Paris"],
+    agent_traces=[agent_trace]
+)`,
     results: [
       { metric: "Goal Completion", value: "100%", status: "excellent" },
       { metric: "Tool Efficiency", value: "0.89", status: "excellent" },

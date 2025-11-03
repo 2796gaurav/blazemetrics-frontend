@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -144,6 +145,14 @@ export default function Blog() {
   }
 
   return (
+    <>
+      <Helmet>
+        <title>Blog | BlazeMetrics</title>
+        <meta name="description" content="Insights, tutorials, and deep dives into LLM evaluation, performance optimization, and the latest in AI measurement science." />
+        <meta property="og:title" content="BlazeMetrics Blog" />
+        <meta property="og:description" content="Insights and tutorials about LLM evaluation and AI measurement." />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/blog" />
+      </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
       <section className="py-16 bg-muted/30">
@@ -263,5 +272,6 @@ export default function Blog() {
         </section>
       )}
     </div>
+    </>
   )
 }

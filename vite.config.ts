@@ -9,11 +9,17 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "/blazemetrics/",
+  // Use base path for GitHub Pages, empty for Vercel
+  // Vercel automatically sets VERCEL=1 environment variable
+  base: process.env.VERCEL === "1" ? "/" : "/blazemetrics/",
   plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  define: {
+    // Expose VERCEL env var to client-side code
+    "import.meta.env.VERCEL": JSON.stringify(process.env.VERCEL || ""),
   },
 }));

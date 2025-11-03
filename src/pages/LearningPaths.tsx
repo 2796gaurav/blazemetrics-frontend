@@ -1,4 +1,6 @@
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
+import { Helmet } from "react-helmet-async"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -102,6 +104,14 @@ export default function LearningPaths() {
   ]
 
   return (
+    <>
+      <Helmet>
+        <title>Learning Paths | BlazeMetrics</title>
+        <meta name="description" content="Structured learning paths for BlazeMetrics. Whether you're a beginner or advanced user, find the right path to master LLM evaluation." />
+        <meta property="og:title" content="BlazeMetrics Learning Paths" />
+        <meta property="og:description" content="Structured learning paths for BlazeMetrics LLM evaluation framework." />
+        <link rel="canonical" href="https://2796gaurav.github.io/blazemetrics/learning-paths" />
+      </Helmet>
     <div className="min-h-screen pt-16">
       {/* Header */}
       <section className="py-16 bg-gradient-to-br from-muted/30 to-accent/5 relative overflow-hidden">
@@ -192,10 +202,10 @@ export default function LearningPaths() {
                     </div>
 
                     <Button asChild className="w-full group-hover:bg-accent group-hover:text-white transition-colors">
-                      <a href={path.href}>
+                      <Link to={path.href}>
                         Start Learning
                         <ArrowRight className="h-4 w-4 ml-2" />
-                      </a>
+                      </Link>
                     </Button>
                   </Card>
                 </motion.div>
@@ -227,9 +237,9 @@ export default function LearningPaths() {
                   </div>
                   <p className="text-muted-foreground mb-4">{path.description}</p>
                   <Button variant="ghost" asChild className="p-0 group-hover:text-black">
-                    <a href={path.href}>
+                    <Link to={path.href}>
                       Explore →
-                    </a>
+                    </Link>
                   </Button>
                 </Card>
               )
@@ -272,5 +282,6 @@ export default function LearningPaths() {
         </motion.section>
       </div>
     </div>
+    </>
   )
 }
